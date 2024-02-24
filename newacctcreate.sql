@@ -158,7 +158,7 @@ select max(rn) from #accountlogic where practice_id = '0002'
 --update c
 --set c.last_generated = (select max(acct_nbr) 
 --						from #accountlogic a	
---						where ''+a.practice_id+'account'=s.counter_type
+--						where ''+a.practice_id+'account'=c.counter_type
 --						)
 --from system_counters c
 
@@ -186,7 +186,12 @@ create_timestamp datetime default getdate(),
 created_by int default 1,
 modified_by int default 1, 
 );
-
+insert into #missingwcacct(
+practice_id,
+guar_id,
+guar_type,
+acc_counter
+)
 select distinct 
 		e.practice_id,
 		e.guar_id,
