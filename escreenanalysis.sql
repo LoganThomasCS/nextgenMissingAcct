@@ -34,10 +34,12 @@ GROUP BY e.practice_id,
 		 CONVERT(date,e.create_timestamp)
 ORDER BY dos DESC, encs DESC
 
+IF OBJECT_ID('tempdb..#aggescr') IS NOT NULL DROP TABLE #aggescr;
 SELECT DISTINCT TOP 100
 		dos,
 		SUM(encs) as encs,
 		'escreen' as enc_type
+	INTO #aggescr
 FROM #escreenanalysis
 GROUP BY dos
 ORDER BY dos DESC
@@ -50,10 +52,12 @@ ORDER BY dos DESC
 --GROUP BY dos
 --ORDER BY encs DESC
 
-SELECT DISTINCT TOP 10
+IF OBJECT_ID('tempdb..#aggwc') IS NOT NULL DROP TABLE #aggwc;
+SELECT DISTINCT TOP 100
 		dos,
 		SUM(encs) as encs,
 		'missing' as enc_type
+	INTO #aggwc
 FROM #wcmissingacct
 GROUP BY dos
 ORDER BY dos DESC
@@ -89,3 +93,5 @@ ORDER BY dos DESC
 --		 practice_id
 --ORDER BY dos DESC
 
+SELECT AVG(encs) FROM #aggescr
+SELECT AVG(encs) FROM #aggwc
