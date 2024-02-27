@@ -25,6 +25,11 @@ A cursor is too slow for the amount of encounters the employer deployment we are
 Added a parameter to direct it at an employer (we can expand this to other employers in the future.)
 
 ### Analysis
+* Demo
+    * Missing employer accounts: (158,670)
+        * Created daily: average last 100 days: 16
+        * Minors (_under 18 today_): 213
+
 
 ## Usage
 
