@@ -15,7 +15,7 @@ We would like not to have to manage the employers yearly.
 
 ## Solution
 
-Deeploy an SP that will generate an account for missing ones for guarantors to fix the missing encounters. Modify it with a parameter to also be used for these employer encounters.
+Deploy an SP that will generate an account for missing ones for guarantors to fix the missing encounters. Modify it with a parameter to also be used for these employer encounters.
 
 Flip guarantors for the overloaded employer (and possibly future employers) to the person when the balance is 0 and the encounter is in a History status.
 
@@ -26,12 +26,25 @@ Added a parameter to direct it at an employer (we can expand this to other emplo
 
 ### Analysis
 * Demo
+    * Total accounts: 4,290,951
     * Missing employer accounts: (158,670)
-        * Created daily: average last 100 days: 16
         * Minors (_under 18 today_): 213
+    * No account for guarantor: 143 accounts
 * Prod
-
+    * Total accounts: 
+    * Missing employer accounts: 
+        * Created daily: average last 100 days: 16
+    * No account but a guarantor: 
+        * Created daily: average last 10 days: 1
 
 ## Usage
+The Stored Procuder is called csm_missingcct. It takes 2 parameters: 
+* read_or_load (bit)
+    * defaults to 0 -- reporting on what will be created
+    * 1 inserts accounts and updates practice correlated last_generated  value on system_counter table
+* accounttype (varchar(30))
+    * currently accepts 2
+        * 'missing' -- default
+        * 'escreen'
 
 
