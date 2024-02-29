@@ -1,16 +1,17 @@
 USE [NGDemo]
 GO
 
-/****** Object:  StoredProcedure [dbo].[csm_missingacct]    Script Date: 2/29/2024 4:37:56 PM ******/
+/****** Object:  StoredProcedure [dbo].[csm_missingacct]    Script Date: 2/29/2024 5:15:47 PM ******/
 DROP PROCEDURE [dbo].[csm_missingacct]
 GO
 
-/****** Object:  StoredProcedure [dbo].[csm_missingacct]    Script Date: 2/29/2024 4:37:56 PM ******/
+/****** Object:  StoredProcedure [dbo].[csm_missingacct]    Script Date: 2/29/2024 5:15:47 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -23,8 +24,9 @@ GO
 -- =============================================
 CREATE PROCEDURE [dbo].[csm_missingacct]
 	-- Add the parameters for the stored procedure here
-	@accounttype varchar(20) = 'missing',
-	@read_or_load bit  = 0
+	@accounttype varchar(20) = 'missing', --  defaults to creating accounts for missing guarantors on encounters (may just need this if we decide to flip the guarantor first.
+	@read_or_load bit  = 0, -- defaults to reporting, pass 1 to insert / update
+	@limitInt int = 10 -- testing limit and possible batch run
 
 AS
 BEGIN
@@ -59,7 +61,7 @@ BEGIN
 		acc_counter
 		)
 		
-		select distinct 
+		select distinct top (select @limitInt) --testing limit
 				e.practice_id,
 				e.person_id,
 				'P',
@@ -150,12 +152,18 @@ BEGIN
 			from #accountlogic
 	
 			-- Update system counters
+			if object_id('tempdb..#lastgen') is not null drop table #lastgen;
+			select a.practice_id+'account' as counter_type,
+					max(a.acct_nbr) as last_generated
+				into #lastgen
+			from #accountlogic a
+			group by a.practice_id
+
+			
 			update c
-			set c.last_generated = (select max(acct_nbr) 
-									from #accountlogic a	
-									where ''+a.practice_id+'account'=c.counter_type
-									)
+			set c.last_generated = l.last_generated --select *
 			from system_counters c
+				join #lastgen l on c.counter_type=l.counter_type
 		end
 		else
 		begin
@@ -166,6 +174,7 @@ BEGIN
 		-- Environment cleanup
 		if object_id('tempdb..#accountlogic') is not null drop table #accountlogic;
 		if object_id('tempdb..#missingacct') is not null drop table #missingacct;
+		if object_id('tempdb..#lastgen') is not null drop table #lastgen;
 	
 	end
 END
