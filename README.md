@@ -38,7 +38,7 @@ Added a parameter to direct it at an employer (we can expand this to other emplo
         * Created daily: average last 10 days: 1
 
 ## Usage
-The Stored Procuder is called csm_missingacct. It takes 2 parameters: 
+The Stored Procuder is called csm_missingacct. It takes 3 parameters: 
 * read_or_load (bit)
     * defaults to 0 -- reporting on what will be created
     * 1 inserts accounts and updates practice correlated last_generated  value on system_counter table
@@ -46,5 +46,7 @@ The Stored Procuder is called csm_missingacct. It takes 2 parameters:
     * currently accepts 2
         * 'missing' -- default
         * 'escreen'
+* limitInt (integer)
+    * Limits the amount of rows to be processed (defaults to 10,000)
 
 

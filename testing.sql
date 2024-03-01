@@ -5,7 +5,7 @@ select distinct last_generated, counter_type from system_counters where counter_
 
 -- Testing SP 
 -- To do test higher amounts -- investigate batching? 
-exec [dbo].[csm_missingacct] @accounttype = 'escreen', @read_or_load = 1
+exec [dbo].[csm_missingacct] @accounttype = 'escreen', @read_or_load = 0, @limitInt = 10000 -- 10k 8 seconds to display
 
 
 -- Update system counters -- fix after initial testing 
@@ -23,3 +23,4 @@ set c.last_generated = l.last_generated --select *
 from system_counters c
 	join #lastgen l on c.counter_type=l.counter_type
 */
+select * from accounts where guar_id = '0BD0C5BF-019A-4680-A2AF-EA7BC57D28ED'

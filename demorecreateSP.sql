@@ -26,7 +26,7 @@ CREATE PROCEDURE [dbo].[csm_missingacct]
 	-- Add the parameters for the stored procedure here
 	@accounttype varchar(20) = 'missing', --  defaults to creating accounts for missing guarantors on encounters (may just need this if we decide to flip the guarantor first.
 	@read_or_load bit  = 0, -- defaults to reporting, pass 1 to insert / update
-	@limitInt int = 10 -- testing limit and possible batch run
+	@limitInt int = 10000 -- testing limit and possible batch run -- tesing 10k, 2k, 4k
 
 AS
 BEGIN
@@ -90,7 +90,7 @@ BEGIN
 		guar_type,
 		acc_counter
 		)
-		select distinct 
+		select distinct top (select @limitInt)
 				e.practice_id,
 				e.guar_id,
 				e.guar_type,
