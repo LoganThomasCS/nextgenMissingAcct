@@ -20,9 +20,11 @@ Deploy an SP that will generate an account for missing ones for guarantors to fi
 Flip guarantors for the overloaded employer (and possibly future employers) to the person when the balance is 0 and the encounter is in a History status.
 
 ## Development / Testing
-A cursor is too slow for the amount of encounters the employer deployment we are attempting to deploy. We rafactored it to use inserts from a temp table instead.
+A cursor is too slow for the amount of encounters the employer portion we were attempting to deploy. We rafactored it to use inserts from a temp table instead.
 
 Added a parameter to direct it at an employer (we can expand this to other employers in the future.)
+
+Added a parameter to limit it for testing / in case we need to run it in batches for performance issues later.
 
 ### Analysis
 * Demo
@@ -47,6 +49,7 @@ The Stored Procuder is called csm_missingacct. It takes 3 parameters:
         * 'missing' -- default
         * 'escreen'
 * limitInt (integer)
-    * Limits the amount of rows to be processed (defaults to 10,000)
+    * Limits the amount of rows to be processed (defaults to 100)
+        * Based on analysis this default limit should be more than enough but we can override it if necessary
 
 
