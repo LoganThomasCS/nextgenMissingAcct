@@ -33,10 +33,10 @@ Added a parameter to limit it for testing / in case we need to run it in batches
         * Minors (_under 18 today_): 213
     * No account for guarantor: 143 accounts
 * Prod
-    * Total accounts: 
-    * Missing employer accounts: 
+    * Total accounts: 4,372,578
+    * Missing employer accounts: (196,155)
         * Created daily: average last 100 days: 16
-    * No account but a guarantor: 
+    * No account but a guarantor: 140
         * Created daily: average last 10 days: 1
 
 ## Usage
